@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>Mvmnt Tribe — Weekend Runs</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #111111;
+      --surface: #1a1a1a;
+      --border: #252525;
+      --border-2: #2a2a2a;
+      --border-3: #333333;
+      --text-primary: #ffffff;
+      --text-muted: #555555;
+      --text-faint: #333333;
+    }
+
+    html, body {
+      background: var(--bg);
+      color: var(--text-primary);
+      font-family: 'Barlow', sans-serif;
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .app {
+      max-width: 420px;
+      margin: 0 auto;
+      min-height: 100vh;
+    }
+
+    @keyframes iridescent-shimmer {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+    @keyframes iridescent-text {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+    @keyframes iridescent-border {
+      0% { background-position: 0% 50%; }
+      100% { background-position: 200% 50%; }
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* HERO */
+    .hero {
+      background: var(--surface);
+      padding: 28px 20px 26px;
+      border-bottom: 1px solid var(--border-2);
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: ''; position: absolute;
+      top: -50px; right: -30px;
+      width: 180px; height: 180px;
+      background: #1e1e1e;
+      clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
+    }
+    .hero::after {
+      content: ''; position: absolute;
+      top: 5px; right: 70px;
+      width: 90px; height: 90px;
+      background: #222;
+      clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
+    }
+    .hero-logo {
+      margin-bottom: 18px;
+      position: relative;
+      z-index: 1;
+      height: 26px;
+      display: flex;
+      align-items: center;
+    }
+    .hero-logo img {
+      height: 26px;
+      width: auto;
+      display: block;
+      /* Logo is dark by default — invert so it appears white on dark bg */
+      filter: invert(1) brightness(1.05);
+    }
+    .hero-main { position: relative; z-index: 1; }
+    .hero-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 48px;
+      font-weight: 900;
+      text-transform: uppercase;
+      line-height: 0.95;
+      letter-spacing: -0.01em;
+      color: #fff;
+    }
+    .hero-title span {
+      display: block;
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+    .hero-tagline {
+      margin-top: 12px;
+      font-size: 11px;
+      color: #444;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    /* STATS BAR */
+    .stats-bar {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      border-bottom: 1px solid var(--border-2);
+    }
+    .stat {
+      padding: 16px 0;
+      text-align: center;
+      border-right: 1px solid var(--border-2);
+    }
+    .stat:last-child { border-right: none; }
+    .stat-num {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 28px;
+      font-weight: 800;
+      line-height: 1;
+    }
+    .stat-label {
+      font-size: 10px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      margin-top: 3px;
+    }
+
+    /* MILESTONES */
+    .milestones {
+      padding: 16px 14px 6px;
+      display: flex;
+      gap: 10px;
+    }
+    .milestone-card {
+      flex: 1;
+      background: linear-gradient(135deg, #1f1f1f 0%, #161616 100%);
+      border: 1px solid #2e2e2e;
+      border-radius: 14px;
+      padding: 14px 12px;
+      position: relative;
+      overflow: hidden;
+    }
+    .milestone-card.pacer::before {
+      content: ''; position: absolute;
+      top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, transparent, #c4842a, transparent);
+    }
+    .milestone-card.strider {
+      border: 1px solid transparent;
+      background:
+        linear-gradient(135deg, #1f1f1f 0%, #161616 100%) padding-box,
+        linear-gradient(135deg, #ff6ec4 0%, #7873f5 25%, #4ade80 50%, #06b6d4 75%, #ff6ec4 100%) border-box;
+      background-size: 100% 100%, 200% 200%;
+      animation: iridescent-shimmer 4s ease-in-out infinite;
+    }
+    .milestone-card.strider::before {
+      content: ''; position: absolute;
+      top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, transparent 0%, #ff6ec4 20%, #7873f5 40%, #4ade80 60%, #06b6d4 80%, transparent 100%);
+      background-size: 200% 100%;
+      animation: iridescent-border 3s linear infinite;
+    }
+    .milestone-card.strider::after {
+      content: ''; position: absolute;
+      bottom: -30px; right: -30px;
+      width: 100px; height: 100px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(120, 115, 245, 0.15) 0%, rgba(255, 110, 196, 0.08) 40%, transparent 70%);
+      pointer-events: none;
+    }
+    .milestone-top {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 10px; position: relative; z-index: 1;
+    }
+    .milestone-icon {
+      width: 38px; height: 38px;
+      border-radius: 10px;
+      background: #232323; border: 1px solid #333;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .pacer .milestone-icon {
+      background: linear-gradient(135deg, #3a2e1a, #1f1810);
+      border-color: #5a4520;
+    }
+    .strider .milestone-icon {
+      background: linear-gradient(135deg, #1a1a2a, #15151f) padding-box,
+                  linear-gradient(135deg, #ff6ec4, #7873f5, #4ade80, #06b6d4) border-box;
+      border: 1px solid transparent;
+      background-size: 100% 100%, 200% 200%;
+      animation: iridescent-shimmer 4s ease-in-out infinite;
+    }
+    .milestone-icon svg { width: 22px; height: 22px; }
+    .milestone-km-pill {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 10px; font-weight: 700; color: #777;
+      background: #222; border: 1px solid #2e2e2e;
+      border-radius: 4px; padding: 2px 6px;
+      letter-spacing: 0.05em;
+    }
+    .strider .milestone-km-pill {
+      background: rgba(120, 115, 245, 0.1);
+      border-color: rgba(120, 115, 245, 0.3);
+      color: #b3b0ff;
+    }
+    .milestone-name {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 22px; font-weight: 900;
+      text-transform: uppercase; letter-spacing: 0.02em;
+      line-height: 1; position: relative; z-index: 1;
+    }
+    .pacer .milestone-name { color: #e0a14a; }
+    .strider .milestone-name {
+      background: linear-gradient(135deg, #ff6ec4 0%, #c8b6ff 30%, #a0e8e8 60%, #b8d8ff 100%);
+      background-size: 200% 200%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: iridescent-text 4s ease-in-out infinite;
+    }
+    .milestone-sub {
+      font-size: 10px; color: var(--text-muted);
+      margin-top: 4px; text-transform: uppercase;
+      letter-spacing: 0.08em; position: relative; z-index: 1;
+    }
+    .strider .milestone-sub { color: #888fbf; }
+
+    /* SEARCH */
+    .search-wrap { padding: 16px 14px 0; }
+    .search-container { position: relative; }
+    .search-input {
+      width: 100%;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 11px 12px 11px 36px;
+      font-family: 'Barlow', sans-serif;
+      font-size: 14px;
+      color: #fff;
+      outline: none;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .search-input::placeholder { color: #444; }
+    .search-input:focus {
+      border-color: #444;
+      background: #1d1d1d;
+    }
+    .search-icon {
+      position: absolute;
+      left: 12px; top: 50%;
+      transform: translateY(-50%);
+      width: 14px; height: 14px;
+      color: #444;
+      pointer-events: none;
+    }
+
+    /* FILTER TABS */
+    .filter-tabs {
+      padding: 12px 14px 0;
+      display: flex;
+      gap: 6px;
+    }
+    .filter-tab {
+      flex: 1;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 9px 4px;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #666;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      user-select: none;
+    }
+    .filter-tab:hover { background: #1f1f1f; color: #888; }
+    .filter-tab.active {
+      background: #2a2a2a;
+      border-color: #3a3a3a;
+      color: #fff;
+    }
+    .filter-tab.active.pacer-tab {
+      background: rgba(224, 161, 74, 0.1);
+      border-color: rgba(224, 161, 74, 0.4);
+      color: #e0a14a;
+    }
+    .filter-tab.active.strider-tab {
+      border: 1px solid transparent;
+      background:
+        linear-gradient(rgba(120, 115, 245, 0.12), rgba(120, 115, 245, 0.12)) padding-box,
+        linear-gradient(135deg, #ff6ec4, #7873f5, #4ade80, #06b6d4) border-box;
+      color: #c8b6ff;
+    }
+    .tab-count {
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 4px;
+      padding: 1px 5px;
+      font-size: 9px;
+      font-weight: 800;
+    }
+    .filter-tab.active .tab-count { background: rgba(255, 255, 255, 0.15); }
+
+    /* SECTION HEADER */
+    .section-header {
+      padding: 16px 14px 8px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .section-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 11px; font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--text-muted);
+    }
+    .season-tag {
+      font-size: 11px; color: var(--text-faint);
+      text-transform: uppercase; letter-spacing: 0.08em;
+    }
+
+    /* LEADERBOARD */
+    .leaderboard {
+      padding: 0 14px 24px;
+      display: flex; flex-direction: column;
+      gap: 8px;
+      min-height: 120px;
+    }
+    .empty-state {
+      padding: 36px 16px;
+      text-align: center;
+      color: #444;
+      font-size: 13px;
+    }
+
+    .runner-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px 12px 12px 9px;
+      display: flex; align-items: center;
+      gap: 10px; position: relative; overflow: hidden;
+      animation: fadeUp 0.3s ease forwards;
+    }
+    .runner-card.strider-runner {
+      border: 1px solid transparent;
+      background:
+        linear-gradient(var(--surface), var(--surface)) padding-box,
+        linear-gradient(135deg, #ff6ec4 0%, #7873f5 25%, #4ade80 50%, #06b6d4 75%, #ff6ec4 100%) border-box;
+      background-size: 100% 100%, 200% 200%;
+      animation: iridescent-shimmer 4s ease-in-out infinite, fadeUp 0.3s ease forwards;
+    }
+    .runner-card.strider-runner::after {
+      content: ''; position: absolute;
+      top: 0; right: 0;
+      width: 80px; height: 100%;
+      background: radial-gradient(ellipse at right, rgba(120, 115, 245, 0.1) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .runner-card.pacer-runner {
+      border-color: rgba(224, 161, 74, 0.3);
+      background: linear-gradient(135deg, rgba(224, 161, 74, 0.04) 0%, var(--surface) 60%);
+    }
+    .runner-card::before {
+      content: ''; position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 3px; background: #333;
+      border-radius: 12px 0 0 12px;
+    }
+    .runner-card.pacer-runner::before { background: #e0a14a; }
+    .runner-card.strider-runner::before {
+      background: linear-gradient(180deg, #ff6ec4, #7873f5, #4ade80, #06b6d4);
+    }
+
+    .rank-num {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 14px; font-weight: 800;
+      color: #333; width: 18px; text-align: center;
+    }
+    .pacer-runner .rank-num { color: #e0a14a; }
+    .strider-runner .rank-num {
+      background: linear-gradient(135deg, #ff6ec4, #7873f5, #06b6d4);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .avatar {
+      width: 38px; height: 38px;
+      border-radius: 50%;
+      background: #222; border: 1.5px solid #333;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 14px; font-weight: 700; color: #888;
+      flex-shrink: 0; text-transform: uppercase;
+      position: relative; z-index: 1;
+    }
+    .pacer-runner .avatar {
+      border-color: #c4842a;
+      background: linear-gradient(135deg, #2a2014, #1a1410);
+      color: #e0a14a;
+    }
+    .strider-runner .avatar {
+      border: 1.5px solid transparent;
+      background:
+        linear-gradient(135deg, #1a1a2a, #15151f) padding-box,
+        linear-gradient(135deg, #ff6ec4, #7873f5, #4ade80, #06b6d4) border-box;
+      background-size: 100% 100%, 200% 200%;
+      animation: iridescent-shimmer 4s ease-in-out infinite;
+      color: #c8b6ff;
+    }
+
+    .runner-info { flex: 1; min-width: 0; position: relative; z-index: 1; }
+    .runner-name {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 17px; font-weight: 700;
+      text-transform: uppercase; color: #e8e8e8;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .strider-runner .runner-name {
+      background: linear-gradient(135deg, #ffffff 0%, #c8b6ff 50%, #b8d8ff 100%);
+      background-size: 200% 200%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: iridescent-text 4s ease-in-out infinite;
+    }
+
+    .runner-progress {
+      display: flex; align-items: center;
+      gap: 6px; margin-top: 5px;
+    }
+    .progress-track {
+      flex: 1; height: 3px; background: #222;
+      border-radius: 2px; overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%; background: #555;
+      border-radius: 2px;
+      transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .pacer-runner .progress-fill { background: #e0a14a; }
+    .strider-runner .progress-fill {
+      background: linear-gradient(90deg, #ff6ec4, #7873f5, #4ade80, #06b6d4);
+      background-size: 200% 100%;
+      animation: iridescent-shimmer 3s ease-in-out infinite;
+    }
+    .progress-pct {
+      font-size: 10px; color: #333;
+      width: 28px; text-align: right;
+    }
+    .pacer-runner .progress-pct { color: #c4842a; }
+    .strider-runner .progress-pct { color: #888fbf; }
+
+    .runner-badge {
+      display: inline-flex; align-items: center;
+      gap: 4px; margin-top: 5px;
+      font-size: 9px; font-weight: 700;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: #e0a14a;
+      background: rgba(224, 161, 74, 0.1);
+      border: 1px solid rgba(224, 161, 74, 0.3);
+      border-radius: 4px; padding: 2px 7px;
+    }
+    .runner-badge.strider-badge {
+      color: #c8b6ff;
+      background: rgba(120, 115, 245, 0.1);
+      border: 1px solid transparent;
+      background-image:
+        linear-gradient(rgba(120, 115, 245, 0.1), rgba(120, 115, 245, 0.1)),
+        linear-gradient(90deg, #ff6ec4, #7873f5, #4ade80, #06b6d4);
+      background-origin: border-box;
+      background-clip: padding-box, border-box;
+    }
+    .badge-dot {
+      width: 4px; height: 4px;
+      border-radius: 50%; background: currentColor;
+    }
+    .next-target {
+      margin-top: 5px; font-size: 10px; color: #333;
+    }
+    .runner-km { text-align: right; flex-shrink: 0; position: relative; z-index: 1; }
+    .km-value {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 24px; font-weight: 800; line-height: 1;
+    }
+    .pacer-runner .km-value { color: #e0a14a; }
+    .strider-runner .km-value {
+      background: linear-gradient(135deg, #ff6ec4, #c8b6ff, #b8d8ff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .km-label {
+      font-size: 9px; color: #333;
+      text-transform: uppercase; letter-spacing: 0.1em;
+      text-align: center;
+    }
+
+    /* LOADER */
+    .loader-msg {
+      padding: 40px 20px;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 13px;
+    }
+    .loader {
+      width: 22px; height: 22px;
+      border: 2px solid #2a2a2a;
+      border-top-color: #666;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin: 0 auto 12px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* FOOTER */
+    .footer {
+      padding: 18px 14px;
+      border-top: 1px solid #1a1a1a;
+      text-align: center;
+    }
+    .footer-text {
+      font-size: 10px; color: #333;
+      text-transform: uppercase; letter-spacing: 0.12em;
+    }
+    .last-updated {
+      font-size: 10px; color: #272727; margin-top: 5px;
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+
+    <!-- HERO -->
+    <div class="hero">
+      <div class="hero-logo">
+        <img src="logo.png" alt="Mvmnt Tribe" />
+      </div>
+      <div class="hero-main">
+        <div class="hero-title">Weekend<span>Runs</span></div>
+        <div class="hero-tagline">Let's get stronger together</div>
+      </div>
+    </div>
+
+    <!-- STATS BAR -->
+    <div class="stats-bar">
+      <div class="stat"><div class="stat-num" id="stat-runners">—</div><div class="stat-label">Runners</div></div>
+      <div class="stat"><div class="stat-num" id="stat-km">—</div><div class="stat-label">Total KM</div></div>
+      <div class="stat"><div class="stat-num" id="stat-badges">—</div><div class="stat-label">Badges</div></div>
+    </div>
+
+    <!-- MILESTONES -->
+    <div class="milestones">
+      <div class="milestone-card pacer">
+        <div class="milestone-top">
+          <div class="milestone-icon">
+            <svg viewBox="0 0 24 24" fill="none">
+              <path d="M13 2L3 14h7l-1 8 10-12h-7l1-8z" fill="#e0a14a" stroke="#e0a14a" stroke-width="0.5" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <span class="milestone-km-pill">25 KM</span>
+        </div>
+        <div class="milestone-name">Pacer</div>
+        <div class="milestone-sub">First milestone</div>
+      </div>
+      <div class="milestone-card strider">
+        <div class="milestone-top">
+          <div class="milestone-icon">
+            <svg viewBox="0 0 24 24" fill="none">
+              <defs>
+                <linearGradient id="iridStrider" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#ff6ec4"/>
+                  <stop offset="33%" stop-color="#7873f5"/>
+                  <stop offset="66%" stop-color="#4ade80"/>
+                  <stop offset="100%" stop-color="#06b6d4"/>
+                </linearGradient>
+              </defs>
+              <path d="M6 3h12v4a4 4 0 01-4 4h-4a4 4 0 01-4-4V3z" fill="url(#iridStrider)" stroke="url(#iridStrider)" stroke-width="0.5" stroke-linejoin="round"/>
+              <path d="M6 5H3v2a3 3 0 003 3M18 5h3v2a3 3 0 01-3 3" stroke="url(#iridStrider)" stroke-width="1.5" stroke-linecap="round"/>
+              <path d="M9 11v3M15 11v3M8 14h8v3H8z" fill="url(#iridStrider)" stroke="url(#iridStrider)" stroke-width="1" stroke-linejoin="round"/>
+              <path d="M7 21h10" stroke="url(#iridStrider)" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <span class="milestone-km-pill">50 KM</span>
+        </div>
+        <div class="milestone-name">Strider</div>
+        <div class="milestone-sub">Elite tier</div>
+      </div>
+    </div>
+
+    <!-- SEARCH -->
+    <div class="search-wrap">
+      <div class="search-container">
+        <svg class="search-icon" viewBox="0 0 24 24" fill="none">
+          <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/>
+          <path d="M20 20l-3-3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        <input type="text" class="search-input" placeholder="Search runner..." id="search-input" />
+      </div>
+    </div>
+
+    <!-- FILTER TABS -->
+    <div class="filter-tabs">
+      <div class="filter-tab active" data-filter="all">All <span class="tab-count" id="count-all">0</span></div>
+      <div class="filter-tab strider-tab" data-filter="strider">Strider <span class="tab-count" id="count-strider">0</span></div>
+      <div class="filter-tab pacer-tab" data-filter="pacer">Pacer <span class="tab-count" id="count-pacer">0</span></div>
+      <div class="filter-tab" data-filter="runner">Runners <span class="tab-count" id="count-runner">0</span></div>
+    </div>
+
+    <!-- SECTION HEADER -->
+    <div class="section-header">
+      <span class="section-title">Leaderboard</span>
+      <span class="season-tag" id="result-count">Season 1 · 2026</span>
+    </div>
+
+    <!-- LEADERBOARD -->
+    <div class="leaderboard" id="board">
+      <div class="loader-msg">
+        <div class="loader"></div>
+        Loading runners...
+      </div>
+    </div>
+
+    <!-- FOOTER -->
+    <div class="footer">
+      <div class="footer-text">Run Together. Grow Together.</div>
+      <div class="last-updated" id="last-updated">Est. 2026</div>
+    </div>
+
+  </div>
+
+  <script>
+    // ─── CONFIGURATION ───────────────────────────────────────────────
+    const SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRhKY34HL4RXIHkhSS8iH3rcIXYRIeNjt7iGTebXhB9s-FGbP0H7goIHYeGd7QgokDtAHPQCI1bjKbg/pub?gid=0&single=true&output=csv';
+    // ─────────────────────────────────────────────────────────────────
+
+    let allRunners = [];
+    let currentFilter = 'all';
+    let currentSearch = '';
+
+    function getInitials(n) { return n.trim().split(' ').map(x=>x[0]).join('').slice(0,2).toUpperCase(); }
+    function getMilestone(km) { if(km>=50)return 'Strider'; if(km>=25)return 'Pacer'; return null; }
+    function getNext(km) { if(km<25)return `${25-km} km to Pacer`; if(km<50)return `${50-km} km to Strider`; return 'All milestones achieved'; }
+    function getProgress(km) { if(km>=50)return 100; if(km>=25)return Math.round(((km-25)/25)*100); return Math.round((km/25)*100); }
+    function getCategory(km) { if(km>=50)return 'strider'; if(km>=25)return 'pacer'; return 'runner'; }
+
+    function parseCSV(text) {
+      const lines = text.trim().split('\n');
+      const headers = lines[0].split(',').map(h=>h.trim().replace(/"/g,''));
+      return lines.slice(1).map(line => {
+        const v = line.split(',').map(x=>x.trim().replace(/"/g,''));
+        const o = {};
+        headers.forEach((h,i)=>o[h]=v[i]||'');
+        return o;
+      });
+    }
+
+    function render() {
+      const board = document.getElementById('board');
+      const sorted = [...allRunners].sort((a, b) => b.km - a.km);
+
+      let filtered = sorted;
+      if (currentFilter !== 'all') {
+        filtered = filtered.filter(r => getCategory(r.km) === currentFilter);
+      }
+      if (currentSearch) {
+        filtered = filtered.filter(r => r.name.toLowerCase().includes(currentSearch.toLowerCase()));
+      }
+
+      const resultEl = document.getElementById('result-count');
+      if (currentFilter === 'all' && !currentSearch) {
+        resultEl.textContent = 'Season 1 · 2026';
+      } else {
+        resultEl.textContent = filtered.length === 1 ? '1 runner' : `${filtered.length} runners`;
+      }
+
+      board.innerHTML = '';
+
+      if (filtered.length === 0) {
+        board.innerHTML = '<div class="empty-state">No runners match your filter</div>';
+        return;
+      }
+
+      filtered.forEach((runner, idx) => {
+        const originalRank = sorted.findIndex(r => r.name === runner.name) + 1;
+        const m = getMilestone(runner.km);
+        const p = getProgress(runner.km);
+        const cat = getCategory(runner.km);
+
+        let cardClass = '';
+        if (cat === 'strider') cardClass = 'strider-runner';
+        else if (cat === 'pacer') cardClass = 'pacer-runner';
+
+        const card = document.createElement('div');
+        card.className = `runner-card ${cardClass}`;
+        card.style.animationDelay = `${idx * 40}ms`;
+        const badgeClass = m === 'Strider' ? 'strider-badge' : '';
+        card.innerHTML = `
+          <div class="rank-num">${originalRank}</div>
+          <div class="avatar">${getInitials(runner.name)}</div>
+          <div class="runner-info">
+            <div class="runner-name">${runner.name}</div>
+            <div class="runner-progress">
+              <div class="progress-track"><div class="progress-fill" data-pct="${p}"></div></div>
+              <div class="progress-pct">${p}%</div>
+            </div>
+            ${m ? `<div class="runner-badge ${badgeClass}"><span class="badge-dot"></span>${m}</div>` : `<div class="next-target">${getNext(runner.km)}</div>`}
+          </div>
+          <div class="runner-km">
+            <div class="km-value">${runner.km}</div>
+            <div class="km-label">km</div>
+          </div>
+        `;
+        board.appendChild(card);
+      });
+
+      requestAnimationFrame(() => {
+        document.querySelectorAll('.progress-fill').forEach(el => {
+          el.style.width = el.dataset.pct + '%';
+        });
+      });
+    }
+
+    function updateCounts() {
+      const sorted = [...allRunners].sort((a, b) => b.km - a.km);
+      const striders = sorted.filter(r => getCategory(r.km) === 'strider').length;
+      const pacers = sorted.filter(r => getCategory(r.km) === 'pacer').length;
+      const runners = sorted.filter(r => getCategory(r.km) === 'runner').length;
+
+      document.getElementById('count-all').textContent = sorted.length;
+      document.getElementById('count-strider').textContent = striders;
+      document.getElementById('count-pacer').textContent = pacers;
+      document.getElementById('count-runner').textContent = runners;
+
+      const totalKm = sorted.reduce((s, r) => s + r.km, 0);
+      const totalBadges = striders + pacers;
+
+      document.getElementById('stat-runners').textContent = sorted.length;
+      document.getElementById('stat-km').textContent = totalKm;
+      document.getElementById('stat-badges').textContent = totalBadges;
+    }
+
+    async function loadLeaderboard() {
+      const board = document.getElementById('board');
+
+      if (!SHEET_CSV_URL || SHEET_CSV_URL.includes('YOUR_GOOGLE_SHEET')) {
+        board.innerHTML = `<div class="loader-msg">⚙️ Setup needed — paste your Google Sheet CSV URL into index.html.</div>`;
+        return;
+      }
+
+      try {
+        const res = await fetch(SHEET_CSV_URL);
+        if (!res.ok) throw new Error('Failed to fetch sheet');
+        const text = await res.text();
+        const rows = parseCSV(text);
+
+        allRunners = rows
+          .filter(r => r['Name'] && r['Name'].trim() !== '')
+          .map(r => ({
+            name: r['Name'].trim(),
+            km: parseFloat(r['Total KMs']) || 0,
+            runs: parseInt(r['Runs Completed']) || 0,
+          }));
+
+        updateCounts();
+        render();
+
+        const now = new Date();
+        document.getElementById('last-updated').textContent =
+          `Updated ${now.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}`;
+
+      } catch (err) {
+        board.innerHTML = '<div class="loader-msg">Could not load data. Check your sheet URL and make sure it is published publicly.</div>';
+        console.error(err);
+      }
+    }
+
+    // Filter tab clicks
+    document.querySelectorAll('.filter-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        currentFilter = tab.dataset.filter;
+        render();
+      });
+    });
+
+    // Search input
+    document.getElementById('search-input').addEventListener('input', (e) => {
+      currentSearch = e.target.value;
+      render();
+    });
+
+    loadLeaderboard();
+  </script>
+</body>
+</html>
