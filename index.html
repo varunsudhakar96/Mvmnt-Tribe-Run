@@ -1,0 +1,1070 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>Mvmnt Tribe — Weekend Runs</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #111111;
+      --surface: #1a1a1a;
+      --border: #252525;
+      --border-2: #2a2a2a;
+      --border-3: #333333;
+      --text-primary: #ffffff;
+      --text-muted: #555555;
+      --text-faint: #333333;
+    }
+
+    html, body {
+      background: var(--bg);
+      color: var(--text-primary);
+      font-family: 'Barlow', sans-serif;
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .app {
+      max-width: 420px;
+      margin: 0 auto;
+      min-height: 100vh;
+    }
+
+    @keyframes iridescent-shimmer {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+    @keyframes iridescent-text {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+    @keyframes iridescent-border {
+      0% { background-position: 0% 50%; }
+      100% { background-position: 200% 50%; }
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* HERO */
+    .hero {
+      background: var(--surface);
+      padding: 28px 20px 26px;
+      border-bottom: 1px solid var(--border-2);
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: ''; position: absolute;
+      top: -50px; right: -30px;
+      width: 180px; height: 180px;
+      background: #1e1e1e;
+      clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
+    }
+    .hero::after {
+      content: ''; position: absolute;
+      top: 5px; right: 70px;
+      width: 90px; height: 90px;
+      background: #222;
+      clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
+    }
+    .hero-logo {
+      margin-bottom: 18px;
+      position: relative;
+      z-index: 1;
+      height: 26px;
+      display: flex;
+      align-items: center;
+    }
+    .hero-logo img {
+      height: 26px;
+      width: auto;
+      display: block;
+      /* Logo is dark by default — invert so it appears white on dark bg */
+      filter: invert(1) brightness(1.05);
+    }
+    .hero-main { position: relative; z-index: 1; }
+    .hero-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 48px;
+      font-weight: 900;
+      text-transform: uppercase;
+      line-height: 0.95;
+      letter-spacing: -0.01em;
+      color: #fff;
+    }
+    .hero-title span {
+      display: block;
+      font-size: 28px;
+      font-weight: 800;
+      color: #d8d8d8;
+      margin-top: 2px;
+    }
+    .hero-tagline {
+      margin-top: 12px;
+      font-size: 12px;
+      color: #9a9a9a;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    /* STATS BAR */
+    .stats-bar {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      border-bottom: 1px solid var(--border-2);
+    }
+    .stat {
+      padding: 16px 0;
+      text-align: center;
+      border-right: 1px solid var(--border-2);
+    }
+    .stat:last-child { border-right: none; }
+    .stat-num {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 28px;
+      font-weight: 800;
+      line-height: 1;
+    }
+    .stat-label {
+      font-size: 10px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      margin-top: 3px;
+    }
+
+    /* MILESTONES */
+    .milestones {
+      padding: 16px 14px 6px;
+      display: flex;
+      gap: 10px;
+    }
+    .milestone-card {
+      flex: 1;
+      background: linear-gradient(135deg, #1f1f1f 0%, #161616 100%);
+      border: 1px solid #2e2e2e;
+      border-radius: 14px;
+      padding: 14px 12px;
+      position: relative;
+      overflow: hidden;
+    }
+    .milestone-card.pacer::before {
+      content: ''; position: absolute;
+      top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, transparent, #c4842a, transparent);
+    }
+    .milestone-card.strider {
+      border: 1px solid transparent;
+      background:
+        linear-gradient(135deg, #1f1f1f 0%, #161616 100%) padding-box,
+        linear-gradient(135deg, #ff6ec4 0%, #7873f5 25%, #4ade80 50%, #06b6d4 75%, #ff6ec4 100%) border-box;
+      background-size: 100% 100%, 100% 100%;
+    }
+    .milestone-card.strider::before {
+      content: ''; position: absolute;
+      top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, transparent 0%, #ff6ec4 20%, #7873f5 40%, #4ade80 60%, #06b6d4 80%, transparent 100%);
+    }
+    .milestone-card.strider::after {
+      content: ''; position: absolute;
+      bottom: -30px; right: -30px;
+      width: 100px; height: 100px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(120, 115, 245, 0.15) 0%, rgba(255, 110, 196, 0.08) 40%, transparent 70%);
+      pointer-events: none;
+    }
+    .milestone-top {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 10px; position: relative; z-index: 1;
+    }
+    .milestone-icon {
+      width: 38px; height: 38px;
+      border-radius: 10px;
+      background: #232323; border: 1px solid #333;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .pacer .milestone-icon {
+      background: linear-gradient(135deg, #3a2e1a, #1f1810);
+      border-color: #5a4520;
+    }
+    .strider .milestone-icon {
+      background: linear-gradient(135deg, #1a1a2a, #15151f) padding-box,
+                  linear-gradient(135deg, #ff6ec4, #7873f5, #4ade80, #06b6d4) border-box;
+      border: 1px solid transparent;
+      background-size: 100% 100%, 100% 100%;
+    }
+    .milestone-icon svg { width: 22px; height: 22px; }
+    .milestone-km-pill {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 10px; font-weight: 700; color: #777;
+      background: #222; border: 1px solid #2e2e2e;
+      border-radius: 4px; padding: 2px 6px;
+      letter-spacing: 0.05em;
+    }
+    .strider .milestone-km-pill {
+      background: rgba(120, 115, 245, 0.1);
+      border-color: rgba(120, 115, 245, 0.3);
+      color: #b3b0ff;
+    }
+    .milestone-name {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 22px; font-weight: 900;
+      text-transform: uppercase; letter-spacing: 0.02em;
+      line-height: 1; position: relative; z-index: 1;
+    }
+    .pacer .milestone-name { color: #e0a14a; }
+    .strider .milestone-name {
+      background: linear-gradient(135deg, #ff6ec4 0%, #c8b6ff 30%, #a0e8e8 60%, #b8d8ff 100%);
+      background-size: 100% 100%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .milestone-sub {
+      font-size: 10px; color: var(--text-muted);
+      margin-top: 4px; text-transform: uppercase;
+      letter-spacing: 0.08em; position: relative; z-index: 1;
+    }
+    .strider .milestone-sub { color: #888fbf; }
+
+    /* SEARCH */
+    .search-wrap { padding: 16px 14px 0; }
+    .search-container { position: relative; }
+    .search-input {
+      width: 100%;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 11px 12px 11px 36px;
+      font-family: 'Barlow', sans-serif;
+      font-size: 14px;
+      color: #fff;
+      outline: none;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .search-input::placeholder { color: #444; }
+    .search-input:focus {
+      border-color: #444;
+      background: #1d1d1d;
+    }
+    .search-icon {
+      position: absolute;
+      left: 12px; top: 50%;
+      transform: translateY(-50%);
+      width: 14px; height: 14px;
+      color: #444;
+      pointer-events: none;
+    }
+
+    /* FILTER TABS */
+    .filter-tabs {
+      padding: 12px 14px 0;
+      display: flex;
+      gap: 6px;
+    }
+    .filter-tab {
+      flex: 1;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 9px 4px;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #666;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      user-select: none;
+    }
+    .filter-tab:hover { background: #1f1f1f; color: #888; }
+    .filter-tab.active {
+      background: #2a2a2a;
+      border-color: #3a3a3a;
+      color: #fff;
+    }
+    .filter-tab.active.pacer-tab {
+      background: rgba(224, 161, 74, 0.1);
+      border-color: rgba(224, 161, 74, 0.4);
+      color: #e0a14a;
+    }
+    .filter-tab.active.strider-tab {
+      border: 1px solid transparent;
+      background:
+        linear-gradient(rgba(120, 115, 245, 0.12), rgba(120, 115, 245, 0.12)) padding-box,
+        linear-gradient(135deg, #ff6ec4, #7873f5, #4ade80, #06b6d4) border-box;
+      color: #c8b6ff;
+    }
+    .tab-count {
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 4px;
+      padding: 1px 5px;
+      font-size: 9px;
+      font-weight: 800;
+    }
+    .filter-tab.active .tab-count { background: rgba(255, 255, 255, 0.15); }
+
+    /* SECTION HEADER */
+    .section-header {
+      padding: 16px 14px 8px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .section-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 14px; font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: #e8e8e8;
+    }
+    .season-tag {
+      font-size: 11px; color: var(--text-faint);
+      text-transform: uppercase; letter-spacing: 0.08em;
+    }
+
+    /* LEADERBOARD */
+    .leaderboard {
+      padding: 0 14px 24px;
+      display: flex; flex-direction: column;
+      gap: 8px;
+      min-height: 120px;
+    }
+    .empty-state {
+      padding: 36px 16px;
+      text-align: center;
+      color: #444;
+      font-size: 13px;
+    }
+
+    .runner-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px 12px 12px 9px;
+      display: flex; align-items: center;
+      gap: 10px; position: relative; overflow: hidden;
+      animation: fadeUp 0.3s ease forwards;
+    }
+    .runner-card.strider-runner {
+      border: 1px solid transparent;
+      background:
+        linear-gradient(var(--surface), var(--surface)) padding-box,
+        linear-gradient(135deg, #ff6ec4 0%, #7873f5 25%, #4ade80 50%, #06b6d4 75%, #ff6ec4 100%) border-box;
+      background-size: 100% 100%, 100% 100%;
+      animation: fadeUp 0.3s ease forwards;
+    }
+    .runner-card.strider-runner::after {
+      content: ''; position: absolute;
+      top: 0; right: 0;
+      width: 80px; height: 100%;
+      background: radial-gradient(ellipse at right, rgba(120, 115, 245, 0.1) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .runner-card.pacer-runner {
+      border-color: rgba(224, 161, 74, 0.3);
+      background: linear-gradient(135deg, rgba(224, 161, 74, 0.04) 0%, var(--surface) 60%);
+    }
+    .runner-card::before {
+      content: ''; position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 3px; background: #333;
+      border-radius: 12px 0 0 12px;
+    }
+    .runner-card.pacer-runner::before { background: #e0a14a; }
+    .runner-card.strider-runner::before {
+      background: linear-gradient(180deg, #ff6ec4, #7873f5, #4ade80, #06b6d4);
+    }
+
+    .rank-num {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 14px; font-weight: 800;
+      color: #333; width: 18px; text-align: center;
+    }
+    .pacer-runner .rank-num { color: #e0a14a; }
+    .strider-runner .rank-num {
+      background: linear-gradient(135deg, #ff6ec4, #7873f5, #06b6d4);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .avatar {
+      width: 38px; height: 38px;
+      border-radius: 50%;
+      background: #222; border: 1.5px solid #333;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 14px; font-weight: 700; color: #888;
+      flex-shrink: 0; text-transform: uppercase;
+      position: relative; z-index: 1;
+    }
+    .pacer-runner .avatar {
+      border-color: #c4842a;
+      background: linear-gradient(135deg, #2a2014, #1a1410);
+      color: #e0a14a;
+    }
+    .strider-runner .avatar {
+      border: 1.5px solid transparent;
+      background:
+        linear-gradient(135deg, #1a1a2a, #15151f) padding-box,
+        linear-gradient(135deg, #ff6ec4, #7873f5, #4ade80, #06b6d4) border-box;
+      background-size: 100% 100%, 100% 100%;
+      color: #c8b6ff;
+    }
+
+    .runner-info { flex: 1; min-width: 0; position: relative; z-index: 1; }
+    .runner-name {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 17px; font-weight: 700;
+      text-transform: uppercase; color: #e8e8e8;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .strider-runner .runner-name {
+      background: linear-gradient(135deg, #ffffff 0%, #c8b6ff 50%, #b8d8ff 100%);
+      background-size: 100% 100%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .runner-progress {
+      display: flex; align-items: center;
+      gap: 6px; margin-top: 5px;
+    }
+    .progress-track {
+      flex: 1; height: 3px; background: #222;
+      border-radius: 2px; overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%; background: #555;
+      border-radius: 2px;
+      transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .pacer-runner .progress-fill { background: #e0a14a; }
+    .strider-runner .progress-fill {
+      background: linear-gradient(90deg, #ff6ec4, #7873f5, #4ade80, #06b6d4);
+      background-size: 100% 100%;
+    }
+    .progress-pct {
+      font-size: 10px; color: #333;
+      width: 28px; text-align: right;
+    }
+    .pacer-runner .progress-pct { color: #c4842a; }
+    .strider-runner .progress-pct { color: #888fbf; }
+
+    .runner-badge {
+      display: inline-flex; align-items: center;
+      gap: 4px; margin-top: 5px;
+      font-size: 9px; font-weight: 700;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: #e0a14a;
+      background: rgba(224, 161, 74, 0.1);
+      border: 1px solid rgba(224, 161, 74, 0.3);
+      border-radius: 4px; padding: 2px 7px;
+    }
+    .runner-badge.strider-badge {
+      color: #c8b6ff;
+      background: rgba(120, 115, 245, 0.1);
+      border: 1px solid transparent;
+      background-image:
+        linear-gradient(rgba(120, 115, 245, 0.1), rgba(120, 115, 245, 0.1)),
+        linear-gradient(90deg, #ff6ec4, #7873f5, #4ade80, #06b6d4);
+      background-origin: border-box;
+      background-clip: padding-box, border-box;
+    }
+    .badge-dot {
+      width: 4px; height: 4px;
+      border-radius: 50%; background: currentColor;
+    }
+    .next-target {
+      margin-top: 5px; font-size: 10px; color: #333;
+    }
+    .runner-km { text-align: right; flex-shrink: 0; position: relative; z-index: 1; }
+    .km-value {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 24px; font-weight: 800; line-height: 1;
+    }
+    .pacer-runner .km-value { color: #e0a14a; }
+    .strider-runner .km-value {
+      background: linear-gradient(135deg, #ff6ec4, #c8b6ff, #b8d8ff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .km-label {
+      font-size: 9px; color: #333;
+      text-transform: uppercase; letter-spacing: 0.1em;
+      text-align: center;
+    }
+
+    /* LOADER */
+    .loader-msg {
+      padding: 40px 20px;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 13px;
+    }
+    .loader {
+      width: 22px; height: 22px;
+      border: 2px solid #2a2a2a;
+      border-top-color: #666;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin: 0 auto 12px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* FOOTER */
+    .footer {
+      padding: 18px 14px;
+      border-top: 1px solid #1a1a1a;
+      text-align: center;
+    }
+    .footer-text {
+      font-size: 10px; color: #333;
+      text-transform: uppercase; letter-spacing: 0.12em;
+    }
+    .last-updated {
+      font-size: 10px; color: #272727; margin-top: 5px;
+    }
+    /* ─── NEW TIERS: RANGER (150, crimson forge) + VOYAGER (300, platinum holo) ─── */
+    @keyframes voyager-glow {
+      0%,100% { box-shadow: 0 0 0 1px rgba(205,214,234,0.28), 0 0 16px rgba(205,214,234,0.16); }
+      50% { box-shadow: 0 0 0 1px rgba(215,201,255,0.34), 0 0 26px rgba(201,236,255,0.24); }
+    }
+
+    /* Milestone showcase → 2×2 grid so all four fit */
+    .milestones { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 2px 14px 6px; }
+
+    /* RANGER — forged crimson with a carbon weave */
+    .milestone-card.ranger {
+      border: 1px solid transparent;
+      background:
+        linear-gradient(135deg, #241011 0%, #160a0b 100%) padding-box,
+        linear-gradient(135deg, #ff6b6b, #f43f5e, #be123c, #ff6b6b) border-box;
+      background-size: 100% 100%, 200% 200%;
+      animation: iridescent-shimmer 5s ease-in-out infinite;
+    }
+    .milestone-card.ranger::before {
+      content:''; position:absolute; top:0; left:0; right:0; height:2px; z-index:2;
+      background: linear-gradient(90deg, transparent, #ff6b6b, #f43f5e, transparent);
+    }
+    .milestone-card.ranger::after {
+      content:''; position:absolute; inset:0; pointer-events:none; opacity:0.55;
+      background:
+        repeating-linear-gradient(45deg, rgba(255,120,120,0.07) 0 1px, transparent 1px 5px),
+        repeating-linear-gradient(-45deg, rgba(0,0,0,0.22) 0 1px, transparent 1px 5px);
+    }
+    .ranger .milestone-icon {
+      background: linear-gradient(135deg, #2a1012, #1a0a0b) padding-box,
+                  linear-gradient(135deg, #ff8a8a, #be123c) border-box;
+      border: 1px solid transparent; position:relative; z-index:1;
+    }
+    .ranger .milestone-km-pill { background: rgba(244,63,94,0.14); border-color: rgba(244,63,94,0.4); color: #ff9da6; }
+    .ranger .milestone-name {
+      background: linear-gradient(135deg, #ffb0b0 0%, #f43f5e 50%, #be123c 100%);
+      background-size: 200% 200%;
+      -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+      animation: iridescent-text 5s ease-in-out infinite;
+    }
+    .ranger .milestone-sub { color: #c97a82; }
+
+    /* VOYAGER — platinum holographic foil, the only glowing tier (apex) */
+    .milestone-card.voyager {
+      border: 1px solid transparent;
+      background:
+        linear-gradient(135deg, #14161f 0%, #0d0e15 100%) padding-box,
+        linear-gradient(135deg, #ffffff, #cdd6ea, #d7c9ff, #ffffff, #c9ecff, #e8ecf6) border-box;
+      background-size: 100% 100%, 200% 200%;
+      animation: iridescent-shimmer 6s ease-in-out infinite, voyager-glow 4s ease-in-out infinite;
+    }
+    .milestone-card.voyager::before {
+      content:''; position:absolute; top:0; left:0; right:0; height:2px; z-index:2;
+      background: linear-gradient(90deg, transparent, #ffffff, #d7c9ff, #c9ecff, #ffffff, transparent);
+      background-size: 200% 100%; animation: iridescent-shimmer 4s ease-in-out infinite;
+    }
+    .milestone-card.voyager::after {
+      content:''; position:absolute; inset:0; pointer-events:none; opacity:0.6;
+      background:
+        repeating-linear-gradient(115deg, rgba(255,255,255,0.05) 0 1px, transparent 1px 7px),
+        radial-gradient(circle at 72% 18%, rgba(215,201,255,0.14), transparent 55%);
+    }
+    .voyager .milestone-icon {
+      background: linear-gradient(135deg, #181a24, #101119) padding-box,
+                  linear-gradient(135deg, #ffffff, #d7c9ff, #c9ecff) border-box;
+      border: 1px solid transparent; position:relative; z-index:1;
+    }
+    .voyager .milestone-km-pill { background: rgba(205,214,234,0.14); border-color: rgba(215,201,255,0.4); color: #dfe6f5; }
+    .voyager .milestone-name {
+      background: linear-gradient(135deg, #ffffff 0%, #e3dbff 40%, #cdd6ea 70%, #d6f0ff 100%);
+      background-size: 200% 200%;
+      -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+      animation: iridescent-text 6s ease-in-out infinite;
+    }
+    .voyager .milestone-sub { color: #9aa3bd; }
+
+    /* RANGER runner row */
+    .runner-card.ranger-runner {
+      border: 1px solid transparent;
+      background:
+        linear-gradient(var(--surface), var(--surface)) padding-box,
+        linear-gradient(135deg, #ff6b6b, #f43f5e, #be123c, #ff6b6b) border-box;
+      background-size: 100% 100%, 200% 200%;
+      animation: iridescent-shimmer 5s ease-in-out infinite, fadeUp 0.3s ease forwards;
+    }
+    .runner-card.ranger-runner::after {
+      content:''; position:absolute; top:0; right:0; width:88px; height:100%; pointer-events:none;
+      background: radial-gradient(ellipse at right, rgba(244,63,94,0.12) 0%, transparent 70%);
+    }
+    .runner-card.ranger-runner::before { background: linear-gradient(180deg, #ff6b6b, #be123c); }
+    .ranger-runner .rank-num {
+      background: linear-gradient(135deg, #ff9da6, #f43f5e);
+      -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;
+    }
+    .ranger-runner .avatar {
+      border:1.5px solid transparent;
+      background: linear-gradient(135deg, #2a1012, #1a0a0b) padding-box,
+                  linear-gradient(135deg, #ff8a8a, #be123c) border-box;
+      color: #ff9da6;
+    }
+    .ranger-runner .runner-name {
+      background: linear-gradient(135deg, #ffffff 0%, #ffb0b0 50%, #f43f5e 100%);
+      -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;
+    }
+    .ranger-runner .progress-fill { background: linear-gradient(90deg, #ff6b6b, #f43f5e, #be123c); background-size:200% 100%; animation: iridescent-shimmer 3s ease-in-out infinite; }
+    .ranger-runner .progress-pct { color: #c97a82; }
+    .ranger-runner .km-value {
+      background: linear-gradient(135deg, #ff9da6, #f43f5e, #be123c);
+      -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;
+    }
+    .runner-badge.ranger-badge {
+      color: #ff9da6; background: rgba(244,63,94,0.1); border:1px solid transparent;
+      background-image: linear-gradient(rgba(244,63,94,0.1), rgba(244,63,94,0.1)), linear-gradient(90deg, #ff6b6b, #f43f5e, #be123c);
+      background-origin: border-box; background-clip: padding-box, border-box;
+    }
+
+    /* VOYAGER runner row */
+    .runner-card.voyager-runner {
+      border: 1px solid transparent;
+      background:
+        linear-gradient(var(--surface), var(--surface)) padding-box,
+        linear-gradient(135deg, #ffffff, #cdd6ea, #d7c9ff, #ffffff, #c9ecff, #e8ecf6) border-box;
+      background-size: 100% 100%, 200% 200%;
+      animation: iridescent-shimmer 6s ease-in-out infinite, voyager-glow 4s ease-in-out infinite, fadeUp 0.3s ease forwards;
+    }
+    .runner-card.voyager-runner::after {
+      content:''; position:absolute; top:0; right:0; width:90px; height:100%; pointer-events:none;
+      background: radial-gradient(ellipse at right, rgba(215,201,255,0.16) 0%, transparent 70%);
+    }
+    .runner-card.voyager-runner::before { background: linear-gradient(180deg, #ffffff, #cdd6ea, #d7c9ff, #c9ecff); }
+    .voyager-runner .rank-num {
+      background: linear-gradient(135deg, #ffffff, #d7c9ff, #c9ecff);
+      -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;
+    }
+    .voyager-runner .avatar {
+      border:1.5px solid transparent;
+      background: linear-gradient(135deg, #181a24, #101119) padding-box,
+                  linear-gradient(135deg, #ffffff, #d7c9ff, #c9ecff) border-box;
+      color: #e8ecf6;
+    }
+    .voyager-runner .runner-name {
+      background: linear-gradient(135deg, #ffffff 0%, #e3dbff 50%, #d6f0ff 100%);
+      background-size:200% 200%;
+      -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;
+      animation: iridescent-text 6s ease-in-out infinite;
+    }
+    .voyager-runner .progress-fill { background: linear-gradient(90deg, #ffffff, #d7c9ff, #c9ecff, #ffffff); background-size:200% 100%; animation: iridescent-shimmer 3s ease-in-out infinite; }
+    .voyager-runner .progress-pct { color: #9aa3bd; }
+    .voyager-runner .km-value {
+      background: linear-gradient(135deg, #ffffff, #d7c9ff, #c9ecff);
+      -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;
+    }
+    .runner-badge.voyager-badge {
+      color: #dfe6f5; background: rgba(205,214,234,0.1); border:1px solid transparent;
+      background-image: linear-gradient(rgba(205,214,234,0.1), rgba(205,214,234,0.1)), linear-gradient(90deg, #ffffff, #d7c9ff, #c9ecff);
+      background-origin: border-box; background-clip: padding-box, border-box;
+    }
+
+    /* Filter tabs: scroll horizontally instead of cramming, + new active states */
+    .filter-tabs { overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+    .filter-tabs::-webkit-scrollbar { display: none; }
+    .filter-tab { flex: 0 0 auto; white-space: nowrap; }
+    .filter-tab.active.ranger-tab {
+      border:1px solid transparent;
+      background: linear-gradient(rgba(244,63,94,0.14), rgba(244,63,94,0.14)) padding-box, linear-gradient(135deg, #ff6b6b, #be123c) border-box;
+      color: #ff9da6;
+    }
+    .filter-tab.active.voyager-tab {
+      border:1px solid transparent;
+      background: linear-gradient(rgba(205,214,234,0.14), rgba(205,214,234,0.14)) padding-box, linear-gradient(135deg, #ffffff, #d7c9ff, #c9ecff) border-box;
+      color: #e8ecf6;
+    }
+    /* ─── FUNCTIONAL MILESTONE BADGES (live count + tap-to-filter) ─── */
+    .milestone-card { cursor: pointer; user-select: none; transition: transform 0.15s ease; }
+    .milestone-card:hover { transform: translateY(-1px); }
+    .milestone-card.is-active { outline: 1.5px solid rgba(255,255,255,0.42); outline-offset: 2px; }
+    .milestone-meta { display: flex; align-items: center; gap: 6px; position: relative; z-index: 1; }
+    .milestone-count {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 12px; font-weight: 800; line-height: 1;
+      min-width: 16px; text-align: center;
+      padding: 2px 6px; border-radius: 5px;
+      background: rgba(255,255,255,0.08); color: #fff;
+      border: 1px solid rgba(255,255,255,0.14);
+    }
+    .milestone-count:empty { display: none; }
+    .pacer .milestone-count { background: rgba(224,161,74,0.18); border-color: rgba(224,161,74,0.45); color: #f0c074; }
+    .strider .milestone-count { background: rgba(120,115,245,0.18); border-color: rgba(120,115,245,0.45); color: #c8b6ff; }
+    .ranger .milestone-count { background: rgba(244,63,94,0.18); border-color: rgba(244,63,94,0.5); color: #ff9da6; }
+    .voyager .milestone-count { background: rgba(205,214,234,0.18); border-color: rgba(215,201,255,0.5); color: #e8ecf6; }
+  </style>
+</head>
+<body>
+  <div class="app">
+
+    <!-- HERO -->
+    <div class="hero">
+      <div class="hero-logo">
+        <img src="logo.png" alt="Mvmnt Tribe" />
+      </div>
+      <div class="hero-main">
+        <div class="hero-title">Weekend<span>Runs</span></div>
+        <div class="hero-tagline">Let's get stronger together</div>
+      </div>
+    </div>
+
+    <!-- STATS BAR -->
+    <div class="stats-bar">
+      <div class="stat"><div class="stat-num" id="stat-runners">—</div><div class="stat-label">Runners</div></div>
+      <div class="stat"><div class="stat-num" id="stat-km">—</div><div class="stat-label">Total KM</div></div>
+      <div class="stat"><div class="stat-num" id="stat-badges">—</div><div class="stat-label">Badges</div></div>
+    </div>
+
+    <!-- MILESTONES -->
+    <div class="section-header">
+      <span class="section-title">Milestones</span>
+    </div>
+    <div class="milestones">
+      <div class="milestone-card pacer" data-filter="pacer">
+        <div class="milestone-top">
+          <div class="milestone-icon">
+            <svg viewBox="0 0 24 24" fill="none">
+              <path d="M13 2L3 14h7l-1 8 10-12h-7l1-8z" fill="#e0a14a" stroke="#e0a14a" stroke-width="0.5" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="milestone-meta"><span class="milestone-count" id="mcount-pacer"></span><span class="milestone-km-pill">25 KM</span></div>
+        </div>
+        <div class="milestone-name">Pacer</div>
+        <div class="milestone-sub">First milestone</div>
+      </div>
+      <div class="milestone-card strider" data-filter="strider">
+        <div class="milestone-top">
+          <div class="milestone-icon">
+            <svg viewBox="0 0 24 24" fill="none">
+              <defs>
+                <linearGradient id="iridStrider" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#ff6ec4"/>
+                  <stop offset="33%" stop-color="#7873f5"/>
+                  <stop offset="66%" stop-color="#4ade80"/>
+                  <stop offset="100%" stop-color="#06b6d4"/>
+                </linearGradient>
+              </defs>
+              <path d="M6 3h12v4a4 4 0 01-4 4h-4a4 4 0 01-4-4V3z" fill="url(#iridStrider)" stroke="url(#iridStrider)" stroke-width="0.5" stroke-linejoin="round"/>
+              <path d="M6 5H3v2a3 3 0 003 3M18 5h3v2a3 3 0 01-3 3" stroke="url(#iridStrider)" stroke-width="1.5" stroke-linecap="round"/>
+              <path d="M9 11v3M15 11v3M8 14h8v3H8z" fill="url(#iridStrider)" stroke="url(#iridStrider)" stroke-width="1" stroke-linejoin="round"/>
+              <path d="M7 21h10" stroke="url(#iridStrider)" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div class="milestone-meta"><span class="milestone-count" id="mcount-strider"></span><span class="milestone-km-pill">50 KM</span></div>
+        </div>
+        <div class="milestone-name">Strider</div>
+        <div class="milestone-sub">Veteran tier</div>
+      </div>
+      <div class="milestone-card ranger" data-filter="ranger">
+        <div class="milestone-top">
+          <div class="milestone-icon">
+            <svg viewBox="0 0 24 24" fill="none">
+              <defs>
+                <linearGradient id="iridRanger" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#ff8a8a"/>
+                  <stop offset="50%" stop-color="#f43f5e"/>
+                  <stop offset="100%" stop-color="#be123c"/>
+                </linearGradient>
+              </defs>
+              <path d="M2 20h20L15 7l-3.2 5.5L9 9l-7 11z" fill="url(#iridRanger)" stroke="url(#iridRanger)" stroke-width="0.5" stroke-linejoin="round"/>
+              <circle cx="17.5" cy="5.5" r="2.4" fill="url(#iridRanger)"/>
+            </svg>
+          </div>
+          <div class="milestone-meta"><span class="milestone-count" id="mcount-ranger"></span><span class="milestone-km-pill">150 KM</span></div>
+        </div>
+        <div class="milestone-name">Ranger</div>
+        <div class="milestone-sub">Long-haul tier</div>
+      </div>
+      <div class="milestone-card voyager" data-filter="voyager">
+        <div class="milestone-top">
+          <div class="milestone-icon">
+            <svg viewBox="0 0 24 24" fill="none">
+              <defs>
+                <linearGradient id="iridVoyager" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#ffffff"/>
+                  <stop offset="40%" stop-color="#d7c9ff"/>
+                  <stop offset="70%" stop-color="#cdd6ea"/>
+                  <stop offset="100%" stop-color="#c9ecff"/>
+                </linearGradient>
+              </defs>
+              <path d="M12 1.5l2.6 7.3L22 11l-7.4 2.2L12 20.5l-2.6-7.3L2 11l7.4-2.2L12 1.5z" fill="url(#iridVoyager)" stroke="url(#iridVoyager)" stroke-width="0.5" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="milestone-meta"><span class="milestone-count" id="mcount-voyager"></span><span class="milestone-km-pill">300 KM</span></div>
+        </div>
+        <div class="milestone-name">Voyager</div>
+        <div class="milestone-sub">Apex tier</div>
+      </div>
+    </div>
+
+    <!-- SEARCH -->
+    <div class="search-wrap">
+      <div class="search-container">
+        <svg class="search-icon" viewBox="0 0 24 24" fill="none">
+          <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/>
+          <path d="M20 20l-3-3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        <input type="text" class="search-input" placeholder="Search runner..." id="search-input" />
+      </div>
+    </div>
+
+    <!-- FILTER TABS -->
+    <div class="filter-tabs">
+      <div class="filter-tab active" data-filter="all">All <span class="tab-count" id="count-all">0</span></div>
+      <div class="filter-tab voyager-tab" data-filter="voyager">Voyager <span class="tab-count" id="count-voyager">0</span></div>
+      <div class="filter-tab ranger-tab" data-filter="ranger">Ranger <span class="tab-count" id="count-ranger">0</span></div>
+      <div class="filter-tab strider-tab" data-filter="strider">Strider <span class="tab-count" id="count-strider">0</span></div>
+      <div class="filter-tab pacer-tab" data-filter="pacer">Pacer <span class="tab-count" id="count-pacer">0</span></div>
+      <div class="filter-tab" data-filter="runner">Runners <span class="tab-count" id="count-runner">0</span></div>
+    </div>
+
+    <!-- SECTION HEADER -->
+    <div class="section-header">
+      <span class="section-title">Leaderboard</span>
+      <span class="season-tag" id="result-count">Season 1 · 2026</span>
+    </div>
+
+    <!-- LEADERBOARD -->
+    <div class="leaderboard" id="board">
+      <div class="loader-msg">
+        <div class="loader"></div>
+        Loading runners...
+      </div>
+    </div>
+
+    <!-- FOOTER -->
+    <div class="footer">
+      <div class="footer-text">Run Together. Grow Together.</div>
+      <div class="last-updated" id="last-updated">Est. 2026</div>
+    </div>
+
+  </div>
+
+  <script>
+    // ─── CONFIGURATION ───────────────────────────────────────────────
+    const SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRhKY34HL4RXIHkhSS8iH3rcIXYRIeNjt7iGTebXhB9s-FGbP0H7goIHYeGd7QgokDtAHPQCI1bjKbg/pub?gid=0&single=true&output=csv';
+    // ─────────────────────────────────────────────────────────────────
+
+    let allRunners = [];
+    let currentFilter = 'all';
+    let currentSearch = '';
+
+    function getInitials(n) { return n.trim().split(' ').map(x=>x[0]).join('').slice(0,2).toUpperCase(); }
+    function getMilestone(km) { if(km>=300)return 'Voyager'; if(km>=150)return 'Ranger'; if(km>=50)return 'Strider'; if(km>=25)return 'Pacer'; return null; }
+    function getNext(km) { if(km<25)return `${+(25-km).toFixed(1)} km to Pacer`; if(km<50)return `${+(50-km).toFixed(1)} km to Strider`; if(km<150)return `${+(150-km).toFixed(1)} km to Ranger`; if(km<300)return `${+(300-km).toFixed(1)} km to Voyager`; return 'Max tier reached'; }
+    function getProgress(km) { if(km>=300)return 100; if(km>=150)return Math.round(((km-150)/150)*100); if(km>=50)return Math.round(((km-50)/100)*100); if(km>=25)return Math.round(((km-25)/25)*100); return Math.round((km/25)*100); }
+    function getCategory(km) { if(km>=300)return 'voyager'; if(km>=150)return 'ranger'; if(km>=50)return 'strider'; if(km>=25)return 'pacer'; return 'runner'; }
+
+    function parseCSV(text) {
+      const lines = text.trim().split('\n');
+      const headers = lines[0].split(',').map(h=>h.trim().replace(/"/g,''));
+      return lines.slice(1).map(line => {
+        const v = line.split(',').map(x=>x.trim().replace(/"/g,''));
+        const o = {};
+        headers.forEach((h,i)=>o[h]=v[i]||'');
+        return o;
+      });
+    }
+
+    function render() {
+      const board = document.getElementById('board');
+      const sorted = [...allRunners].sort((a, b) => b.km - a.km);
+
+      let filtered = sorted;
+      if (currentFilter !== 'all') {
+        filtered = filtered.filter(r => getCategory(r.km) === currentFilter);
+      }
+      if (currentSearch) {
+        filtered = filtered.filter(r => r.name.toLowerCase().includes(currentSearch.toLowerCase()));
+      }
+
+      const resultEl = document.getElementById('result-count');
+      if (currentFilter === 'all' && !currentSearch) {
+        resultEl.textContent = 'Season 1 · 2026';
+      } else {
+        resultEl.textContent = filtered.length === 1 ? '1 runner' : `${filtered.length} runners`;
+      }
+
+      board.innerHTML = '';
+
+      if (filtered.length === 0) {
+        board.innerHTML = '<div class="empty-state">No runners match your filter</div>';
+        return;
+      }
+
+      filtered.forEach((runner, idx) => {
+        const originalRank = sorted.findIndex(r => r.name === runner.name) + 1;
+        const m = getMilestone(runner.km);
+        const p = getProgress(runner.km);
+        const cat = getCategory(runner.km);
+
+        let cardClass = cat === 'runner' ? '' : `${cat}-runner`;
+
+        const card = document.createElement('div');
+        card.className = `runner-card ${cardClass}`;
+        card.style.animationDelay = `${idx * 40}ms`;
+        const badgeClass = (m && m !== 'Pacer') ? `${m.toLowerCase()}-badge` : '';
+        card.innerHTML = `
+          <div class="rank-num">${originalRank}</div>
+          <div class="avatar">${getInitials(runner.name)}</div>
+          <div class="runner-info">
+            <div class="runner-name">${runner.name}</div>
+            <div class="runner-progress">
+              <div class="progress-track"><div class="progress-fill" data-pct="${p}"></div></div>
+              <div class="progress-pct">${p}%</div>
+            </div>
+            ${m ? `<div class="runner-badge ${badgeClass}"><span class="badge-dot"></span>${m}</div>` : `<div class="next-target">${getNext(runner.km)}</div>`}
+          </div>
+          <div class="runner-km">
+            <div class="km-value">${runner.km}</div>
+            <div class="km-label">km</div>
+          </div>
+        `;
+        board.appendChild(card);
+      });
+
+      requestAnimationFrame(() => {
+        document.querySelectorAll('.progress-fill').forEach(el => {
+          el.style.width = el.dataset.pct + '%';
+        });
+      });
+    }
+
+    function updateCounts() {
+      const sorted = [...allRunners].sort((a, b) => b.km - a.km);
+      const voyagers = sorted.filter(r => getCategory(r.km) === 'voyager').length;
+      const rangers = sorted.filter(r => getCategory(r.km) === 'ranger').length;
+      const striders = sorted.filter(r => getCategory(r.km) === 'strider').length;
+      const pacers = sorted.filter(r => getCategory(r.km) === 'pacer').length;
+      const runners = sorted.filter(r => getCategory(r.km) === 'runner').length;
+
+      document.getElementById('count-all').textContent = sorted.length;
+      document.getElementById('count-voyager').textContent = voyagers;
+      document.getElementById('count-ranger').textContent = rangers;
+      document.getElementById('count-strider').textContent = striders;
+      document.getElementById('count-pacer').textContent = pacers;
+      document.getElementById('count-runner').textContent = runners;
+
+      // milestone card live counts (blank when zero so nothing shows)
+      const mc = { voyager: voyagers, ranger: rangers, strider: striders, pacer: pacers };
+      Object.keys(mc).forEach(tier => {
+        const el = document.getElementById('mcount-' + tier);
+        if (el) el.textContent = mc[tier] > 0 ? mc[tier] : '';
+      });
+
+      const totalKm = sorted.reduce((s, r) => s + r.km, 0);
+      const totalBadges = voyagers + rangers + striders + pacers;
+
+      document.getElementById('stat-runners').textContent = sorted.length;
+      document.getElementById('stat-km').textContent = Math.round(totalKm);
+      document.getElementById('stat-badges').textContent = totalBadges;
+    }
+
+    async function loadLeaderboard() {
+      const board = document.getElementById('board');
+
+      if (!SHEET_CSV_URL || SHEET_CSV_URL.includes('YOUR_GOOGLE_SHEET')) {
+        board.innerHTML = `<div class="loader-msg">⚙️ Setup needed — paste your Google Sheet CSV URL into index.html.</div>`;
+        return;
+      }
+
+      try {
+        const res = await fetch(SHEET_CSV_URL);
+        if (!res.ok) throw new Error('Failed to fetch sheet');
+        const text = await res.text();
+        const rows = parseCSV(text);
+
+        allRunners = rows
+          .filter(r => r['Name'] && r['Name'].trim() !== '')
+          .map(r => ({
+            name: r['Name'].trim(),
+            km: parseFloat(r['Total KMs']) || 0,
+            runs: parseInt(r['Runs Completed']) || 0,
+          }));
+
+        updateCounts();
+        render();
+
+        const now = new Date();
+        document.getElementById('last-updated').textContent =
+          `Updated ${now.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}`;
+
+      } catch (err) {
+        board.innerHTML = '<div class="loader-msg">Could not load data. Check your sheet URL and make sure it is published publicly.</div>';
+        console.error(err);
+      }
+    }
+
+    // Centralized filter setter — keeps the tabs and the milestone cards in sync
+    function setFilter(f) {
+      currentFilter = f;
+      document.querySelectorAll('.filter-tab').forEach(t =>
+        t.classList.toggle('active', t.dataset.filter === f));
+      document.querySelectorAll('.milestone-card').forEach(c =>
+        c.classList.toggle('is-active', c.dataset.filter === f));
+      render();
+    }
+
+    // Filter tab clicks
+    document.querySelectorAll('.filter-tab').forEach(tab => {
+      tab.addEventListener('click', () => setFilter(tab.dataset.filter));
+    });
+
+    // Milestone badge clicks: tap to filter, tap again to clear. Search is untouched.
+    document.querySelectorAll('.milestone-card').forEach(card => {
+      card.addEventListener('click', () => {
+        const tier = card.dataset.filter;
+        setFilter(currentFilter === tier ? 'all' : tier);
+      });
+    });
+
+    // Search input
+    document.getElementById('search-input').addEventListener('input', (e) => {
+      currentSearch = e.target.value;
+      render();
+    });
+
+    loadLeaderboard();
+  </script>
+</body>
+</html>
